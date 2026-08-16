@@ -1,13 +1,58 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>تسجيل الدخول - NEVO STORE</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body style="text-align: center; padding-top: 100px; background: #121212; color: white;">
-  <h2>مرحباً بك في NEVO STORE</h2>
-  <p>يرجى تسجيل الدخول بحساب ديسكورد للوصول للموقع</p>
-  <a href="/auth/discord" style="display: inline-block; padding: 12px 24px; background: #5865F2; color: white; border-radius: 6px; text-decoration: none; font-weight: bold;">تسجيل الدخول عبر Discord</a>
-</body>
-</html>
+const express = require('express');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware لتمرير البيانات المشفّرة وبناء مجلد الملفات الثابتة
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+
+// التوجيهات الرئيسية للتوثيق والصفحات (Routes)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'), (err) => {
+        if (err) {
+            res.sendFile(path.join(__dirname, 'public', 'login.html'));
+        }
+    });
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'), (err) => {
+        if (err) {
+            res.sendFile(path.join(__dirname, 'public', 'login.html'));
+        }
+    });
+});
+
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'), (err) => {
+        if (err) {
+            res.sendFile(path.join(__dirname, 'public', 'login.html'));
+        }
+    });
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'), (err) => {
+        if (err) {
+            res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+        }
+    });
+});
+
+app.get('/admin-login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-login.html'), (err) => {
+        if (err) {
+            res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
+        }
+    });
+});
+
+// تشغيل الخادم
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
